@@ -24,25 +24,41 @@ public class App {
                     System.out.println();
                 }
                 default -> {
-                    int firstNum = Integer.parseInt(input);
-                    System.out.print("두 번째 숫자를 입력하세요: ");
-                    input = sc.nextLine();
-                    int secondNum = Integer.parseInt(input);
+                    int firstNum = 0;
+                    int secondNum = 0;
+                    char operator;
+                    try{
+                        firstNum = Integer.parseInt(input);
+                    }catch(NumberFormatException e){
+                        System.out.println("숫자만 입력하세요.");
+                        break;
+                    }
+
+                    try{
+                        System.out.print("두 번째 숫자를 입력하세요: ");
+                        input = sc.nextLine();
+                        secondNum = Integer.parseInt(input);
+                    }
+                    catch (NumberFormatException e){
+                        System.out.println("숫자만 입력하세요.");
+                        break;
+                    }
+
                     System.out.println("사칙연산 기호를 입력하세요: ");
-                    String operator = sc.nextLine();
+                    operator = sc.nextLine().charAt(0);
 
                     int result = 0;
                     switch (operator) {
-                        case "+":
+                        case '+':
                             result = firstNum + secondNum;
                             break;
-                        case "-":
+                        case '-':
                             result = firstNum - secondNum;
                             break;
-                        case "*":
+                        case '*':
                             result = firstNum * secondNum;
                             break;
-                        case "/":
+                        case '/':
                             if (secondNum != 0) {
                                 result = firstNum / secondNum;
                             } else {
