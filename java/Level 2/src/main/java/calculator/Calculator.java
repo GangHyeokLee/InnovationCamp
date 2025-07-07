@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
-    private final List<Integer> results = new ArrayList<>();
+    private List<Integer> results;
+
+    public Calculator() {
+        this.results = new ArrayList<>();
+    }
 
     public Integer calculate(int a, int b, char operator) {
         return switch (operator) {
@@ -31,5 +35,9 @@ public class Calculator {
         results.remove(0);
     }
 
+    public void inquiryResults(){
+        results.forEach(x -> System.out.print(x + " "));
+        System.out.println();
+    }
 
 }

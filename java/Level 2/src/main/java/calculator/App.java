@@ -1,7 +1,5 @@
 package calculator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -10,7 +8,6 @@ public class App {
         Scanner sc = new Scanner(System.in);
         boolean flag = true;
 
-        List<Integer> results = new ArrayList<>();
         Calculator calculator = new Calculator();
 
         while (flag) {
@@ -20,10 +17,7 @@ public class App {
             switch (input) {
                 case "exit" -> flag = false;
                 case "remove" -> calculator.removeResult();
-                case "inquiry" -> {
-                    results.forEach(x -> System.out.print(x + " "));
-                    System.out.println();
-                }
+                case "inquiry" -> calculator.inquiryResults();
                 default -> {
                     int firstNum;
                     int secondNum;
@@ -51,7 +45,6 @@ public class App {
 
                     System.out.println("결과: " + result);
 
-                    results.add(result);
                     System.out.println("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? (remove 입력 시 삭제)");
                     System.out.println("저장된 연산결과를 조회하시겠습니까? (inquiry 입력 시 조회)");
                     System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");
