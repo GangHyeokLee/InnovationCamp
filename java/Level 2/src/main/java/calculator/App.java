@@ -19,15 +19,14 @@ public class App {
             String input = sc.nextLine();
             switch (input) {
                 case "exit" -> flag = false;
-                case "remove" -> results.remove(0);
+                case "remove" -> calculator.removeResult();
                 case "inquiry" -> {
                     results.forEach(x -> System.out.print(x + " "));
                     System.out.println();
                 }
                 default -> {
-                    int firstNum = 0;
-                    int secondNum = 0;
-                    char operator;
+                    int firstNum;
+                    int secondNum;
                     try{
                         firstNum = Integer.parseInt(input);
                     }catch(NumberFormatException e){
@@ -46,11 +45,9 @@ public class App {
                     }
 
                     System.out.println("사칙연산 기호를 입력하세요: ");
-                    operator = sc.nextLine().charAt(0);
 
-                    int result = calculator.calculate(firstNum, secondNum, operator);
+                    int result = calculator.calculate(firstNum, secondNum, sc.nextLine().charAt(0));
                     calculator.setResult(result);
-
 
                     System.out.println("결과: " + result);
 
@@ -61,17 +58,5 @@ public class App {
                 }
             }
         }
-    }
-
-    static void add_result(int result, int[] results, int count) {
-        if (count < 10) {
-            results[count] = result;
-            return;
-        }
-
-        for (int i = 1; i < 10; i++) {
-            results[i - 1] = results[i];
-        }
-        results[9] = result;
     }
 }
