@@ -23,7 +23,9 @@ public class Calculator {
         return results;
     }
 
-    public void setResults(List<Integer> nums) {
-        this.results = nums;
+    public void setResult(Integer n) {
+        results.add(n);
     }
+
+
 }

@@ -49,6 +49,7 @@ public class App {
                     operator = sc.nextLine().charAt(0);
 
                     int result = calculator.calculate(firstNum, secondNum, operator);
+                    calculator.setResult(result);
 
 
                     System.out.println("결과: " + result);
