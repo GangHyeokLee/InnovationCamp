@@ -50,6 +50,7 @@ public class App {
 
                     int result = calculator.calculate(firstNum, secondNum, operator);
 
+
                     System.out.println("결과: " + result);
 
                     results.add(result);
