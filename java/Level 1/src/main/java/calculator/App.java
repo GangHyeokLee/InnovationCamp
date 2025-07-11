@@ -13,8 +13,9 @@ public class App {
         List<Integer> results = new ArrayList<>();
 
         while (flag) {
+            boolean success = true;
 
-            System.out.print("첫 번째 숫자를 입력하세요: ");
+            System.out.print("명령어를 입력하거나 첫 번째 숫자를 입력하세요: ");
             String input = sc.nextLine();
             switch (input) {
                 case "exit" -> flag = false;
@@ -24,27 +25,26 @@ public class App {
                     System.out.println();
                 }
                 default -> {
-                    int firstNum = 0;
-                    int secondNum = 0;
+                    int firstNum;
+                    int secondNum;
                     char operator;
-                    try{
+                    try {
                         firstNum = Integer.parseInt(input);
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("숫자만 입력하세요.");
                         break;
                     }
 
-                    try{
+                    try {
                         System.out.print("두 번째 숫자를 입력하세요: ");
                         input = sc.nextLine();
                         secondNum = Integer.parseInt(input);
-                    }
-                    catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("숫자만 입력하세요.");
                         break;
                     }
 
-                    System.out.println("사칙연산 기호를 입력하세요: ");
+                    System.out.print("사칙연산 기호를 입력하세요: ");
                     operator = sc.nextLine().charAt(0);
 
                     int result = 0;
@@ -63,15 +63,18 @@ public class App {
                                 result = firstNum / secondNum;
                             } else {
                                 System.out.println("나눗셈 연산에서 두 번째 정수에 0이 입력될 수 없습니다.");
+                                success = false;
                             }
                             break;
                         default:
                             System.out.println("입력 값이 올바르지 않습니다");
+                            success = false;
                             break;
                     }
-                    System.out.println("결과: " + result);
-
-                    results.add(result);
+                    if (success) {
+                        System.out.println("결과: " + result);
+                        results.add(result);
+                    }
                     System.out.println("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? (remove 입력 시 삭제)");
                     System.out.println("저장된 연산결과를 조회하시겠습니까? (inquiry 입력 시 조회)");
                     System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");
