@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
-    private List<Integer> results;
+    private final List<Integer> results;
+    private final List<Double> circles;
 
     public Calculator() {
         this.results = new ArrayList<>();
+        this.circles = new ArrayList<>();
     }
 
     public Integer calculate(int a, int b, char operator) {
@@ -38,6 +40,18 @@ public class Calculator {
     public void inquiryResults(){
         results.forEach(x -> System.out.print(x + " "));
         System.out.println();
+    }
+
+    public double calculateCircleArea(int radius) {
+        return radius * radius * Math.PI;
+    }
+
+    public List<Double> getCircles() {
+        return circles;
+    }
+
+    public void setCircles(double circle) {
+        this.circles.add(circle);
     }
 
 }

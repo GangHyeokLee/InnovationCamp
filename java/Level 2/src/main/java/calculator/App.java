@@ -12,12 +12,24 @@ public class App {
 
         while (flag) {
 
-            System.out.print("첫 번째 숫자를 입력하세요: ");
+            System.out.print("명령어를 입력하거나 첫 번째 숫자를 입력하세요: ");
             String input = sc.nextLine();
             switch (input) {
                 case "exit" -> flag = false;
                 case "remove" -> calculator.removeResult();
                 case "inquiry" -> calculator.inquiryResults();
+                case "circle" -> {
+                    System.out.print("반지름을 입력하세요: ");
+                    String r = sc.nextLine();
+                    try {
+                        int radius = Integer.parseInt(r);
+                        double circle = calculator.calculateCircleArea(radius);
+                        calculator.setCircles(circle);
+                        System.out.println("결과: " + circle);
+                    } catch (NumberFormatException e) {
+                        System.out.print("숫자만 입력하세요");
+                    }
+                }
                 default -> {
                     int firstNum;
                     int secondNum;
