@@ -10,8 +10,7 @@ public class App {
         Scanner sc = new Scanner(System.in);
         boolean flag = true;
 
-        ArithmeticCalculator<Integer> arithmeticInt = new ArithmeticCalculator<>(Integer.class);
-        ArithmeticCalculator<Double> arithmeticIntDoub = new ArithmeticCalculator<>(Double.class);
+        ArithmeticCalculator arithmetic = new ArithmeticCalculator();
         CircleCalculator circular = new CircleCalculator();
 
         while (flag) {
@@ -20,21 +19,25 @@ public class App {
             String input = sc.nextLine();
             switch (input) {
                 case "exit" -> flag = false;
+                case "compare" -> {
+                    System.out.print("숫자를 입력하세요: ");
+                    input = sc.nextLine();
+                    double num = Double.parseDouble(input);
+                    arithmetic.compare(num);
+                    break;
+                }
                 case "remove" -> {
                     while(true){
-                        System.out.print("어떤 타입의 기록을 지우려 하시나요?: 1. Integer, 2. Double, 3. Circle");
+                        System.out.print("어떤 타입의 기록을 지우려 하시나요?: 1. Arithmetic, 2. Circle");
                         input = sc.nextLine();
                         try{
                             int t = Integer.parseInt(input);
 
                             switch (t) {
                                 case 1:
-                                    arithmeticInt.removeResult();
+                                    arithmetic.removeResult();
                                     break;
                                 case 2:
-                                    arithmeticIntDoub.removeResult();
-                                    break;
-                                case 3:
                                     circular.removeResult();
                                     break;
                             }
@@ -45,8 +48,7 @@ public class App {
                     }
                 }
                 case "inquiry" -> {
-                    arithmeticInt.inquiryResults();
-                    arithmeticIntDoub.inquiryResults();
+                    arithmetic.inquiryResults();
                     circular.inquiryResults();
                 }
                 case "circle" -> {
@@ -100,17 +102,18 @@ public class App {
                     char op = sc.nextLine().charAt(0);
 
                     if (isInt) {
-                        int result = arithmeticInt.calculate(firstNumInt, secondNumInt, op);
-                        arithmeticInt.setResult(result);
+                        int result = arithmetic.calculate((double) firstNumInt,(double) secondNumInt, op).intValue();
+                        arithmetic.setResult((double) result);
                         System.out.println("결과: " + result);
                     } else {
-                        double result = arithmeticIntDoub.calculate(firstNumDouble, secondNumDouble, op);
-                        arithmeticIntDoub.setResult(result);
+                        double result = arithmetic.calculate(firstNumDouble, secondNumDouble, op);
+                        arithmetic.setResult(result);
                         System.out.println("결과: " + result);
                     }
 
                     System.out.println("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? (remove 입력 시 삭제)");
                     System.out.println("저장된 연산결과를 조회하시겠습니까? (inquiry 입력 시 조회)");
+                    System.out.println("값 비교 (compare 입력 시 조회)");
                     System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");
                 }
             }

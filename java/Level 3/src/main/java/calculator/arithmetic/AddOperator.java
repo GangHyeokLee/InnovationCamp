@@ -1,9 +1,6 @@
-package calculator.arithmetic.doub;
+package calculator.arithmetic;
 
-import calculator.arithmetic.Operator;
-import calculator.arithmetic.OperatorType;
-
-public class AddOperatorDouble implements Operator<Double> {
+public class AddOperator implements Operator{
     @Override
     public Double operate(Double a, Double b) {
         return a + b;

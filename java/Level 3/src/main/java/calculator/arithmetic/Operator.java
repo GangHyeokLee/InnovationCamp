@@ -1,7 +1,7 @@
 package calculator.arithmetic;
 
-public interface Operator<T> {
-    T operate(T a, T b);
+public interface Operator {
+    Double operate(Double a, Double b);
 
     OperatorType getOperatorType();
 }
