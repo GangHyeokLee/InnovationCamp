@@ -8,7 +8,8 @@ public class App {
         Scanner sc = new Scanner(System.in);
         boolean flag = true;
 
-        Calculator calculator = new Calculator();
+        ArithmeticCalculator arithmetic = new ArithmeticCalculator();
+        CircleCalculator circular = new CircleCalculator();
 
         while (flag) {
 
@@ -16,15 +17,18 @@ public class App {
             String input = sc.nextLine();
             switch (input) {
                 case "exit" -> flag = false;
-                case "remove" -> calculator.removeResult();
-                case "inquiry" -> calculator.inquiryResults();
+                case "remove" -> arithmetic.removeResult();
+                case "inquiry" -> {
+                    arithmetic.inquiryResults();
+                    circular.inquiryResults();
+                }
                 case "circle" -> {
                     System.out.print("반지름을 입력하세요: ");
                     String r = sc.nextLine();
                     try {
                         int radius = Integer.parseInt(r);
-                        double circle = calculator.calculateCircleArea(radius);
-                        calculator.setCircles(circle);
+                        double circle = circular.calculate(radius);
+                        circular.setResult(circle);
                         System.out.println("결과: " + circle);
                     } catch (NumberFormatException e) {
                         System.out.print("숫자만 입력하세요");
@@ -52,8 +56,8 @@ public class App {
 
                     System.out.println("사칙연산 기호를 입력하세요: ");
 
-                    int result = calculator.calculate(firstNum, secondNum, sc.nextLine().charAt(0));
-                    calculator.setResult(result);
+                    int result = arithmetic.calculate(firstNum, secondNum, sc.nextLine().charAt(0));
+                    arithmetic.setResult(result);
 
                     System.out.println("결과: " + result);
 
@@ -63,5 +67,7 @@ public class App {
                 }
             }
         }
+
+        sc.close();
     }
 }
