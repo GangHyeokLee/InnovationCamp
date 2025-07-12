@@ -1,24 +1,29 @@
 package calculator;
 
-import calculator.arithmetic.AddOperator;
-import calculator.arithmetic.DivideOperator;
-import calculator.arithmetic.MultiplyOperator;
-import calculator.arithmetic.SubtractOperator;
+import calculator.arithmetic.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArithmeticCalculator extends Calculator<Integer> {
 
+    private final List<Operator> operators = new ArrayList<>();
 
     public ArithmeticCalculator() {
         super();
+        operators.add(new AddOperator());
+        operators.add(new SubtractOperator());
+        operators.add(new MultiplyOperator());
+        operators.add(new DivideOperator());
+        operators.add(new ModOperator());
     }
 
     public Integer calculate(int a, int b, char operator) {
-        return switch (operator) {
-            case '+' -> AddOperator.operate(a, b);
-            case '-' -> SubtractOperator.operate(a, b);
-            case '*' -> MultiplyOperator.operate(a, b);
-            case '/' -> DivideOperator.operate(a, b);
-            default -> 0;
-        };
+        for(Operator op : operators) {
+            if(op.getOperator() == operator) {
+                return op.operate(a, b);
+            }
+        }
+        return 0;
     }
 }

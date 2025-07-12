@@ -1,7 +1,13 @@
 package calculator.arithmetic;
 
-public class DivideOperator {
-    public static int operate(int a, int b) {
+public class DivideOperator implements Operator {
+    @Override
+    public char getOperator() {
+        return '/';
+    }
+
+    @Override
+    public int operate(int a, int b) {
         try {
             return a / b;
         } catch (ArithmeticException e) {
