@@ -23,8 +23,7 @@ public class App {
                     System.out.print("숫자를 입력하세요: ");
                     input = sc.nextLine();
                     double num = Double.parseDouble(input);
-                    arithmetic.compare(num);
-                    break;
+                    arithmetic.printGreaterThan(num);
                 }
                 case "remove" -> {
                     while(true){

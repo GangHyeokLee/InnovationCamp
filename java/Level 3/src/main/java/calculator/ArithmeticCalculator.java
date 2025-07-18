@@ -30,8 +30,8 @@ public class ArithmeticCalculator extends Calculator<Double> {
         throw new IllegalOperatorException(operator);
     }
 
-    public void compare(double num){
-        this.getResults().stream().filter(x -> x > num).forEach(System.out::println);
-
+    public void printGreaterThan(double num){
+        this.getResults().stream().filter(x -> x > num).forEach(x -> System.out.print(x + " "));
+        System.out.println();
     }
 }
