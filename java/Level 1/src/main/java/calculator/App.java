@@ -8,17 +8,17 @@ public class App {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        boolean flag = true;
+        boolean isRunning = true;
 
         List<Integer> results = new ArrayList<>();
 
-        while (flag) {
-            boolean success = true;
+        while (isRunning) {
+            boolean isSuccess = true;
 
             System.out.print("명령어를 입력하거나 첫 번째 숫자를 입력하세요: ");
             String input = sc.nextLine();
             switch (input) {
-                case "exit" -> flag = false;
+                case "exit" -> isRunning = false;
                 case "remove" -> {
                     if (!results.isEmpty()) {
                         results.remove(0);
@@ -69,15 +69,15 @@ public class App {
                                 result = firstNum / secondNum;
                             } else {
                                 System.out.println("나눗셈 연산에서 두 번째 정수에 0이 입력될 수 없습니다.");
-                                success = false;
+                                isSuccess = false;
                             }
                             break;
                         default:
                             System.out.println("입력 값이 올바르지 않습니다");
-                            success = false;
+                            isSuccess = false;
                             break;
                     }
-                    if (success) {
+                    if (isSuccess) {
                         System.out.println("결과: " + result);
                         results.add(result);
                     }
