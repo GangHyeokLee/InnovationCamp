@@ -37,30 +37,31 @@ public class App {
                 default -> {
                     int firstNum;
                     int secondNum;
-                    try{
+                    try {
                         firstNum = Integer.parseInt(input);
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("숫자만 입력하세요.");
                         break;
                     }
 
-                    try{
+                    try {
                         System.out.print("두 번째 숫자를 입력하세요: ");
                         input = sc.nextLine();
                         secondNum = Integer.parseInt(input);
-                    }
-                    catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("숫자만 입력하세요.");
                         break;
                     }
 
-                    System.out.println("사칙연산 기호를 입력하세요: ");
+                    System.out.print("사칙연산 기호를 입력하세요: ");
 
-                    int result = arithmetic.calculate(firstNum, secondNum, sc.nextLine().charAt(0));
-                    arithmetic.setResult(result);
+                    Integer result = arithmetic.calculate(firstNum, secondNum, sc.nextLine().charAt(0));
+                    if (result != null) {
+                        arithmetic.setResult(result);
+                        System.out.println("결과: " + result);
+                    }
 
-                    System.out.println("결과: " + result);
-
+                    System.out.println();
                     System.out.println("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? (remove 입력 시 삭제)");
                     System.out.println("저장된 연산결과를 조회하시겠습니까? (inquiry 입력 시 조회)");
                     System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");

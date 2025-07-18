@@ -2,7 +2,7 @@ package calculator.arithmetic;
 
 public class ModOperator implements Operator {
     @Override
-    public int operate(int a, int b) {
+    public Integer operate(int a, int b) {
         return a % b;
     }
 

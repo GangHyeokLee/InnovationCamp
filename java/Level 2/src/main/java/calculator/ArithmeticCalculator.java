@@ -24,6 +24,7 @@ public class ArithmeticCalculator extends Calculator<Integer> {
                 return op.operate(a, b);
             }
         }
-        return 0;
+        System.out.println("일치하는 연산자가 없습니다.");
+        return null;
     }
 }
