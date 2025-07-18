@@ -19,7 +19,13 @@ public class App {
             String input = sc.nextLine();
             switch (input) {
                 case "exit" -> flag = false;
-                case "remove" -> results.remove(0);
+                case "remove" -> {
+                    if (!results.isEmpty()) {
+                        results.remove(0);
+                    } else {
+                        System.out.println("삭제할 결과가 없습니다.");
+                    }
+                }
                 case "inquiry" -> {
                     results.forEach(x -> System.out.print(x + " "));
                     System.out.println();
