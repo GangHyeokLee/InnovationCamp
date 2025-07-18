@@ -25,6 +25,8 @@ public class BeanValidationTest {
         dto.setStringField(" ");
         // 2. @Range 제약조건에 위반
         dto.setIntegerField(10000);
+        // 3. @Pattern 제약조건에 위반 (email 필드)
+        dto.setEmail("invalid-email");
 
         // DTO를 검증
         Set<ConstraintViolation<TestDto>> violations = validator.validate(dto);
@@ -33,10 +35,10 @@ public class BeanValidationTest {
         // 검증에 걸린 필드가 있어야 함
         assertThat(violations).isNotEmpty();
         // 2개의 제약 위반 발생
-        assertThat(violations.size()).isEqualTo(2);
+        assertThat(violations.size()).isEqualTo(3);
 
         // Validation에 걸린 내역을 출력
-        for(ConstraintViolation<TestDto> violation : violations) {
+        for (ConstraintViolation<TestDto> violation : violations) {
             // 1. 아래의 결과에 Message가 있으면 Validation에 걸린것.
             // Default Message가 있기 때문에 출력됨
             // Message를 수정하고싶다면 어노테이션 속성값(message="입력")으로 설정할 수 있다.

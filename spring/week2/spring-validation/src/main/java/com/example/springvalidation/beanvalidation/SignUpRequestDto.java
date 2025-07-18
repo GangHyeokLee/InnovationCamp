@@ -2,6 +2,7 @@ package com.example.springvalidation.beanvalidation;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Range;
 import lombok.Getter;
 
@@ -31,4 +32,17 @@ public class SignUpRequestDto {
     @Range(min = 1, max = 120)
     private Integer age;
 
+
+    /**
+     * 1. null을 허용하지 않는다.
+     * 2. 빈값(””)을 허용하지 않는다.
+     * 3. Email 형식 : 계정@도메인.최상위도메인
+     * 4. 계정 : @, .를 제외한 모든 문자열 / 도메인: 영어, 숫자/ 최상위 도메인: 영어만 허용
+     */
+    @NotBlank
+    @Pattern(
+            regexp = "^[^@.]+@[A-Za-z0-9]+\\.[A-Za-z]$",
+            message = "이메일 형식이 올바르지 않습니다."
+    )
+    private String email;
 }
