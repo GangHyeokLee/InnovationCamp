@@ -88,16 +88,4 @@ public class App {
             }
         }
     }
-
-    static void add_result(int result, int[] results, int count) {
-        if (count < 10) {
-            results[count] = result;
-            return;
-        }
-
-        for (int i = 1; i < 10; i++) {
-            results[i - 1] = results[i];
-        }
-        results[9] = result;
-    }
 }
