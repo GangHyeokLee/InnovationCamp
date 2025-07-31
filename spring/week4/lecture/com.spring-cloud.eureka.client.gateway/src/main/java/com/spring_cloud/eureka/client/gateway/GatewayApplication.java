@@ -1,4 +1,4 @@
-package com.spring_cloud.client.gateway;
+package com.spring_cloud.eureka.client.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
