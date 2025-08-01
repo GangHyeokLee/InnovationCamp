@@ -6,6 +6,7 @@ import com.sparta.msa_exam.product.entity.Product;
 import com.sparta.msa_exam.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ProductService {
         return productRepository.findAll().stream().map(ProductResponseDto::new).toList();
     }
 
+    @Transactional
     public ProductResponseDto saveProduct(ProductSaveRequestDto productSaveRequestDto) {
         Product product = new Product(productSaveRequestDto.getName(), productSaveRequestDto.getSupply_price());
         return new ProductResponseDto(productRepository.save(product));
