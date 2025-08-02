@@ -18,13 +18,19 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@Valid @RequestBody OrderRequestDto orderRequestDto) {
-        return orderService.saveOrder(orderRequestDto);
+        return ResponseEntity.ok(orderService.saveOrder(orderRequestDto));
     }
 
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> addProductToOrder(
             @Valid @RequestBody AddProductRequestDto addProductRequestDto,
             @PathVariable("orderId") Integer orderId) {
-        return orderService.addProduct(addProductRequestDto, orderId);
+        return ResponseEntity.ok(orderService.addProduct(addProductRequestDto, orderId));
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponseDto> getOrder(
+            @PathVariable("orderId") Integer orderId) {
+        return ResponseEntity.ok(orderService.findOrderById(orderId));
     }
 }

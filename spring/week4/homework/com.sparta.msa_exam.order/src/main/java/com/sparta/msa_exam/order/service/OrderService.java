@@ -33,7 +33,7 @@ public class OrderService {
             name = "orderService",
             fallbackMethod = "fallbackSaveOrder"
     )
-    public ResponseEntity<OrderResponseDto> saveOrder(OrderRequestDto orderRequestDto) {
+    public OrderResponseDto saveOrder(OrderRequestDto orderRequestDto) {
         log.info("주문 요청 수신: {}", orderRequestDto.getProduct_ids());
 
         // 기존 상품 목록의 id 불러오기, Set -> O(1)의 탐색 시간
@@ -56,10 +56,10 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        return ResponseEntity.ok(new OrderResponseDto(
+        return new OrderResponseDto(
                 savedOrder.getOrder_id(),
                 savedOrder.getProduct_ids()
-        ));
+        );
     }
 
 
@@ -69,7 +69,7 @@ public class OrderService {
             name = "orderService",
             fallbackMethod = "fallbackAddProduct"
     )
-    public ResponseEntity<OrderResponseDto> addProduct(@Valid AddProductRequestDto addProductRequestDto, Integer orderId) {
+    public OrderResponseDto addProduct(AddProductRequestDto addProductRequestDto, Integer orderId) {
         Long product_id = addProductRequestDto.getProduct_id();
         log.info("주문 ID: {}에 상품 ID: {} 추가 요청", orderId, product_id);
 
@@ -105,10 +105,17 @@ public class OrderService {
 
         log.info("주문 ID: {}에 상품 ID: {} 추가 완료", orderId, product_id);
 
-        return ResponseEntity.ok(new OrderResponseDto(
+        return new OrderResponseDto(
                 savedOrder.getOrder_id(),
                 savedOrder.getProduct_ids()
-        ));
+        );
+    }
+
+    public OrderResponseDto findOrderById(Integer orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 주문 ID: " + orderId)
+        );
+        return new OrderResponseDto(order.getOrder_id(), order.getProduct_ids());
     }
 
     public ResponseEntity<?> fallbackSaveOrder(OrderRequestDto orderRequestDto, Throwable t) {
@@ -140,4 +147,6 @@ public class OrderService {
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("잠시 후에 상품 추가를 요청 해주세요.");
     }
+
+
 }
