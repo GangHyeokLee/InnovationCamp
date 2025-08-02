@@ -19,8 +19,17 @@ public class User {
     @NotBlank
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, UserRole role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
 }
