@@ -1,6 +1,7 @@
 package com.sparta.msa_exam.order.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,8 +17,10 @@ public class OrderedProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @NotNull
     private Order order;
 
+    @NotNull
     private Long product_id;
 
     public OrderedProduct(Order order, Long productId) {

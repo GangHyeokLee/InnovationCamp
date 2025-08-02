@@ -1,6 +1,7 @@
 package com.sparta.msa_exam.order.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ public class Order {
     private Long order_id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Size(min = 1)
     private List<OrderedProduct> product_ids = new ArrayList<>();
 
     public void addOrderedProduct(Long product_id) {
