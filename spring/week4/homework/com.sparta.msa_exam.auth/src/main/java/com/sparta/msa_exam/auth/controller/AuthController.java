@@ -1,5 +1,6 @@
 package com.sparta.msa_exam.auth.controller;
 
+import com.sparta.msa_exam.auth.dto.response.AuthResponseDto;
 import com.sparta.msa_exam.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/auth/sign-in")
-    public ResponseEntity<String> signIn(@RequestParam String user-id) {
-
+    public ResponseEntity<AuthResponseDto> signIn(@RequestParam("username") String username) {
+        return ResponseEntity.ok(authService.createAccessToken(username));
     }
 }
