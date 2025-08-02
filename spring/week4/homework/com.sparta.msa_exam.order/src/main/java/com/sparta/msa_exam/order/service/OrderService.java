@@ -1,6 +1,7 @@
 package com.sparta.msa_exam.order.service;
 
 import com.sparta.msa_exam.order.client.ProductClient;
+import com.sparta.msa_exam.order.dto.request.AddProductRequestDto;
 import com.sparta.msa_exam.order.dto.request.OrderRequestDto;
 import com.sparta.msa_exam.order.dto.response.OrderResponseDto;
 import com.sparta.msa_exam.order.dto.response.ProductResponseDto;
@@ -8,6 +9,7 @@ import com.sparta.msa_exam.order.entity.Order;
 import com.sparta.msa_exam.order.repository.OrderRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -60,18 +62,79 @@ public class OrderService {
         ));
     }
 
+
+
+    @Transactional
+    @CircuitBreaker(
+            name = "orderService",
+            fallbackMethod = "fallbackAddProduct"
+    )
+    public ResponseEntity<OrderResponseDto> addProduct(@Valid AddProductRequestDto addProductRequestDto, Integer orderId) {
+        Long product_id = addProductRequestDto.getProduct_id();
+        log.info("주문 ID: {}에 상품 ID: {} 추가 요청", orderId, product_id);
+
+        // 주문 존재 여부 확인
+        Order order = orderRepository.findById(orderId).orElseThrow(
+            () -> new IllegalArgumentException("존재하지 않는 주문 ID: " + orderId)
+        );
+
+        // 기존 상품 목록의 id 불러오기, Set -> O(1)의 탐색 시간
+        Set<Long> availableProducts = productClient.getProducts()
+                .stream()
+                .map(ProductResponseDto::getId)
+                .collect(Collectors.toSet());
+
+        // 존재하지 않는 상품 ID인지 확인
+        if (!availableProducts.contains(product_id)) {
+            log.warn("존재하지 않는 상품 ID 요청: {}", product_id);
+            throw new IllegalArgumentException("존재하지 않는 상품 ID: " + product_id);
+        }
+
+        // 이미 주문에 포함된 상품인지 확인
+        if (order.getProduct_ids().contains(product_id)) {
+            log.warn("이미 주문에 포함된 상품 ID: {}", product_id);
+            throw new IllegalArgumentException("이미 주문에 포함된 상품 ID: " + product_id);
+        }
+
+        // 상품을 주문에 추가
+        order.addOrderedProduct(product_id);
+        Order savedOrder = orderRepository.save(order);
+
+        log.info("주문 ID: {}에 상품 ID: {} 추가 완료", orderId, product_id);
+
+        return ResponseEntity.ok(new OrderResponseDto(
+                savedOrder.getOrder_id(),
+                savedOrder.getProduct_ids()
+        ));
+    }
+
     public ResponseEntity<?> fallbackSaveOrder(OrderRequestDto orderRequestDto, Throwable t) {
         log.error("fallbackSaveOrder 실행됨 - 상품 API 호출 실패. 요청 상품 ID: {}. 예외: {}",
                 orderRequestDto.getProduct_ids(), t.toString());
-        
+
         // 비즈니스 로직 예외들은 fallback이 아닌 정상적인 예외로 처리
         if (t instanceof IllegalArgumentException) {
             throw (RuntimeException) t;
         }
-        
+
         // 실제 서비스 장애 시에만 fallback 메시지 반환
         return ResponseEntity
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("잠시 후에 주문 추가를 요청 해주세요.");
+    }
+
+    public ResponseEntity<?> fallbackAddProduct(AddProductRequestDto addProductRequestDto, Integer orderId, Throwable t) {
+        log.error("fallbackAddProduct 실행됨 - 상품 API 호출 실패. 주문 ID: {}, 상품 ID: {}. 예외: {}",
+                orderId, addProductRequestDto.getProduct_id(), t.toString());
+
+        // 비즈니스 로직 예외들은 fallback이 아닌 정상적인 예외로 처리
+        if (t instanceof IllegalArgumentException) {
+            throw (RuntimeException) t;
+        }
+
+        // 실제 서비스 장애 시에만 fallback 메시지 반환
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("잠시 후에 상품 추가를 요청 해주세요.");
     }
 }

@@ -1,5 +1,6 @@
 package com.sparta.msa_exam.order.controller;
 
+import com.sparta.msa_exam.order.dto.request.AddProductRequestDto;
 import com.sparta.msa_exam.order.dto.request.OrderRequestDto;
 import com.sparta.msa_exam.order.dto.response.OrderResponseDto;
 import com.sparta.msa_exam.order.service.OrderService;
@@ -18,5 +19,12 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@Valid @RequestBody OrderRequestDto orderRequestDto) {
         return orderService.saveOrder(orderRequestDto);
+    }
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<OrderResponseDto> addProductToOrder(
+            @Valid @RequestBody AddProductRequestDto addProductRequestDto,
+            @PathVariable("orderId") Integer orderId) {
+        return orderService.addProduct(addProductRequestDto, orderId);
     }
 }
