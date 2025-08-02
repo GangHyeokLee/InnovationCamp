@@ -22,7 +22,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:19090/eureka/
 
+
 service:
   jwt:
     access-expiration: ${JWT_EXPIRATION}
     secret-key: ${JWT_KEY}
+server:
+  port: 19095
