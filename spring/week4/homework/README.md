@@ -38,3 +38,15 @@ public ResponseEntity<?> fallbackSaveOrder(OrderRequestDto orderRequestDto, Thro
     }
 ```
 Throwable t의 instance를 확인하여 상품이 존재하지 않는 경우에는 기존 Error가 반환되도록 수정
+
+
+
+# 과제 진행
+## Load Balancing -> 실패
+Load Balancing은 Spring boot [공식 문서](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/loadbalancer.html)를 보고 진행하려고 했으나 도저히 안 돼서 강의 보고 진행하겠습니다.
+
+----
+
+# 질문
+## 1. .env 파일 사용 유무
+프론트엔드 개발할 때, key나 db 정보 등을 .env 파일에 넣어서 관리했는데, Spring Boot 개발할 때도 마찬가지인지 궁금합니다. 똑같이 .env 파일 사용하면 되는지 아니면 다른 방법이 있는지 궁금합니다.
