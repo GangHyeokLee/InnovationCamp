@@ -1,11 +1,14 @@
 package com.sparta.msa_exam.auth.service;
 
 import com.sparta.msa_exam.auth.dto.response.AuthResponseDto;
+import com.sparta.msa_exam.auth.entity.User;
+import com.sparta.msa_exam.auth.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -14,6 +17,7 @@ import java.util.Date;
 @Service
 public class AuthService {
 
+    private final UserRepository userRepository;
     @Value("${spring.application.name}")
     private String issuer;
 
@@ -22,13 +26,18 @@ public class AuthService {
 
     private final SecretKey secretKey;
 
-    public AuthService(@Value("${service.jwt.secret-key}") String secretKey) {
+    public AuthService(@Value("${service.jwt.secret-key}") String secretKey, UserRepository userRepository) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
+        this.userRepository = userRepository;
     }
 
     public AuthResponseDto createAccessToken(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
         return new AuthResponseDto(Jwts.builder()
-                .claim("username", username)
+                .claim("username", user.getUsername())
+                .claim("role", user.getRole())
                 .issuer(issuer)
                 .issuedAt(new Date((System.currentTimeMillis())))
                 .expiration(new Date(System.currentTimeMillis() + accessExpiration))
