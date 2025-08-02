@@ -1,7 +1,11 @@
 package com.sparta.msa_exam.auth.service;
 
+import com.sparta.msa_exam.auth.dto.request.SignUpRequestDto;
 import com.sparta.msa_exam.auth.dto.response.AuthResponseDto;
+import com.sparta.msa_exam.auth.dto.response.UserResponseDto;
 import com.sparta.msa_exam.auth.entity.User;
+import com.sparta.msa_exam.auth.entity.UserRole;
+import com.sparta.msa_exam.auth.exception.UserExistsException;
 import com.sparta.msa_exam.auth.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -43,5 +47,28 @@ public class AuthService {
                 .expiration(new Date(System.currentTimeMillis() + accessExpiration))
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact());
+    }
+
+    public UserResponseDto createUser(SignUpRequestDto signUpRequestDto) {
+
+        // username이 이미 존재하면 예외 발생
+        if (validateUser(signUpRequestDto.getUsername())) {
+            throw new UserExistsException();
+        }
+
+        return new UserResponseDto(
+                userRepository.save(
+                        new User(
+                                signUpRequestDto.getUsername(),
+                                signUpRequestDto.getPassword(),
+                                UserRole.fromString(signUpRequestDto.getRole()
+                                )
+                        )
+                )
+        );
+    }
+
+    public Boolean validateUser(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 }

@@ -15,6 +15,11 @@ public enum UserRole {
 
     // String으로부터 UserRole을 찾는 메서드
     public static UserRole fromString(String role) {
+
+        if (role == null) {
+            return USER;
+        }
+
         for (UserRole userRole : UserRole.values()) {
             if (userRole.roleName.equalsIgnoreCase(role)) {
                 return userRole;
