@@ -9,9 +9,9 @@ import com.sparta.msa_exam.order.entity.Order;
 import com.sparta.msa_exam.order.repository.OrderRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -62,14 +62,12 @@ public class OrderService {
         );
     }
 
-
-
     @Transactional
     @CircuitBreaker(
             name = "orderService",
             fallbackMethod = "fallbackAddProduct"
     )
-    public OrderResponseDto addProduct(AddProductRequestDto addProductRequestDto, Integer orderId) {
+    public OrderResponseDto addProduct(AddProductRequestDto addProductRequestDto, Long orderId) {
         Long product_id = addProductRequestDto.getProduct_id();
         log.info("주문 ID: {}에 상품 ID: {} 추가 요청", orderId, product_id);
 
@@ -111,7 +109,8 @@ public class OrderService {
         );
     }
 
-    public OrderResponseDto findOrderById(Integer orderId) {
+    @Cacheable(value = "orders", key = "#orderId")
+    public OrderResponseDto findOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 주문 ID: " + orderId)
         );

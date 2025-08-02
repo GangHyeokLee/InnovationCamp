@@ -24,13 +24,13 @@ public class OrderController {
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> addProductToOrder(
             @Valid @RequestBody AddProductRequestDto addProductRequestDto,
-            @PathVariable("orderId") Integer orderId) {
+            @PathVariable("orderId") Long orderId) {
         return ResponseEntity.ok(orderService.addProduct(addProductRequestDto, orderId));
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> getOrder(
-            @PathVariable("orderId") Integer orderId) {
+            @PathVariable("orderId") Long orderId) {
         return ResponseEntity.ok(orderService.findOrderById(orderId));
     }
 }
