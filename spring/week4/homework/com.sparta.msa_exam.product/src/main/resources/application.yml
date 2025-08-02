@@ -10,7 +10,7 @@ spring:
     import: optional:.env[.properties]
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate # 여러 instance 접근 시 DDL은 못 건들게하기
     properties:
       hibernate:
         show_sql: true
@@ -21,6 +21,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:19090/eureka/
-
-server:
-  port: 19093
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
