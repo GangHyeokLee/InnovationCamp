@@ -91,7 +91,10 @@ public class OrderService {
         }
 
         // 이미 주문에 포함된 상품인지 확인
-        if (order.getProduct_ids().contains(product_id)) {
+        boolean isAlreadyOrdered = order.getProduct_ids().stream()
+                .anyMatch(orderedProduct -> orderedProduct.getProduct_id().equals(product_id));
+        
+        if (isAlreadyOrdered) {
             log.warn("이미 주문에 포함된 상품 ID: {}", product_id);
             throw new IllegalArgumentException("이미 주문에 포함된 상품 ID: " + product_id);
         }
