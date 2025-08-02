@@ -8,6 +8,6 @@ import java.util.List;
 
 @FeignClient(name = "product-service")
 public interface ProductClient {
-    @GetMapping("/product")
+    @GetMapping("/products")
     List<ProductResponseDto> getProducts();
 }

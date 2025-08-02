@@ -8,10 +8,10 @@ import java.util.List;
 @Getter
 public class OrderResponseDto {
     private final Long order_id;
-    private final List<OrderedProduct> product_ids;
+    private final List<Long> product_ids;
 
     public OrderResponseDto(Long order_id, List<OrderedProduct> product_ids) {
         this.order_id = order_id;
-        this.product_ids = product_ids;
+        this.product_ids = product_ids.stream().map(OrderedProduct::getProduct_id).toList();
     }
 }
