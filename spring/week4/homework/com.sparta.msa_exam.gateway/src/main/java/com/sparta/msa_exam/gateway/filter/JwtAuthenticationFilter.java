@@ -31,12 +31,12 @@ public class JwtAuthenticationFilter implements GlobalFilter {
             return chain.filter(exchange);
         }
 
-//        String token = extractToken(exchange);
-//        if (token == null || !validateToken(token)) {
-//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-//            return exchange.getResponse().setComplete();
-//        }
-//
+        String token = extractToken(exchange);
+        if (token == null || !validateToken(token)) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+
         return chain.filter(exchange);
     }
 
